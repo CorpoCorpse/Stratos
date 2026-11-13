@@ -1,0 +1,395 @@
+/* ==========================================================
+   STRATOS — black-space galaxy theme (simple version)
+   Keep logo.png and p1.jpg … p100.jpg in the same folder.
+   ========================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Unbounded:wght@500;700&display=swap");
+
+/* ---------- 1. COLORS & SETTINGS (change the look here) ---------- */
+:root {
+  --white: #f6f8ff;
+  --blue: #a9cbff;      /* main accent */
+  --gold: #ffd9a3;      /* prices */
+  --gray: #9aa3b8;      /* quiet text */
+  --panel: rgba(8, 10, 16, 0.65);          /* dark glass boxes */
+  --border: rgba(190, 210, 255, 0.18);
+
+  --title-font: "Unbounded", system-ui, sans-serif;
+  --text-font: "Outfit", system-ui, sans-serif;
+  --round: 20px;
+}
+
+/* ---------- 2. BASICS ---------- */
+* { box-sizing: border-box; }
+
+html {
+  background: #000;
+  /* Keeps the scrollbar space reserved on every page,
+     so the header never jumps when you change pages. */
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;               /* lets the footer stay at the bottom */
+  flex-direction: column;
+  font: 300 1.05rem/1.6 var(--text-font);
+  color: var(--white);
+  background: transparent;
+}
+
+img { max-width: 100%; }
+
+/* Keeps the header still while pages change (modern browsers) */
+@view-transition { navigation: auto; }
+header { view-transition-name: header; }
+
+/* ---------- 3. THE SKY ---------- */
+/* Milky Way: a soft diagonal glow behind everything */
+html {
+  background-image: linear-gradient(115deg,
+    transparent 25%, rgba(120, 140, 190, 0.08) 40%,
+    rgba(235, 215, 185, 0.13) 50%,
+    rgba(120, 140, 190, 0.08) 60%, transparent 75%);
+  background-attachment: fixed;
+}
+
+/* Small stars (each line = one star: size, position, color) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 20px 40px,   #fff, transparent),
+    radial-gradient(1px 1px at 100px 140px, #cfe0ff, transparent),
+    radial-gradient(1px 1px at 170px 60px,  #fff, transparent),
+    radial-gradient(1px 1px at 250px 210px, #ffe3bd, transparent),
+    radial-gradient(1px 1px at 60px 230px,  #fff, transparent),
+    radial-gradient(1px 1px at 300px 100px, #bcd6ff, transparent);
+  background-size: 330px 270px;     /* the pattern repeats every 330x270px */
+}
+
+/* Bigger stars that twinkle */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 60px 90px,   #fff, transparent),
+    radial-gradient(3px 3px at 310px 40px,  #cfe0ff, transparent),
+    radial-gradient(2px 2px at 430px 260px, #ffeacc, transparent),
+    radial-gradient(2px 2px at 150px 380px, #fff, transparent);
+  background-size: 560px 480px;
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+/* ---------- 4. TEXT ---------- */
+/* Page titles: white-to-blue gradient text */
+h1, h2 {
+  font-family: var(--title-font);
+  background: linear-gradient(100deg, #fff, var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 { margin: 0 0 1.5rem; font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.15; }
+h3 { margin: 0 0 0.4rem; font-weight: 500; font-size: 1.05rem; }
+p  { margin: 0 0 1rem; max-width: 62ch; color: #cfd6e6; }
+a  { color: var(--blue); }
+
+/* ---------- 5. HEADER (logo + menu) ---------- */
+header {
+  position: sticky;            /* stays at the top while scrolling */
+  top: 0;
+  z-index: 10;
+  min-height: 76px;
+  padding: 0.5rem clamp(1rem, 4vw, 3rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* The logo: logo.png has empty space around it,
+   so we crop it to show only the "S" symbol. */
+header h1::before {
+  content: "";
+  width: 48px;
+  height: 44px;
+  background: url("logo.png") -75px -55px / 198px 198px no-repeat;
+}
+
+nav { display: flex; flex-wrap: wrap; gap: 0.2rem; }
+
+nav a {
+  padding: 0.5rem 1rem;
+  color: var(--gray);
+  text-decoration: none;
+  border-radius: 999px;
+  transition: 0.25s;
+}
+
+nav a:hover {
+  color: #fff;
+  background: rgba(190, 215, 255, 0.12);
+}
+
+/* ---------- 6. PAGE SECTIONS ---------- */
+section {
+  width: min(1150px, 100%);
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem;
+}
+
+/* ---------- 7. BUTTONS ---------- */
+.btn, button {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  font: 500 1rem var(--text-font);
+  color: #04060b;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff, #9ec5ff);
+  box-shadow: 0 0 25px -4px rgba(190, 215, 255, 0.6);
+  transition: 0.25s;
+}
+
+.btn:hover, button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px -2px rgba(210, 228, 255, 0.9);
+}
+
+/* ---------- 8. HOME PAGE: title + spinning galaxy ---------- */
+.hero {
+  --size: clamp(320px, 46vw, 640px);     /* galaxy size */
+  position: relative;
+  width: 100%;                           /* full width (other sections are narrower) */
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: max(1.5rem, (100% - 1150px) / 2 + 1.5rem);
+  overflow: hidden;
+}
+
+.hero > * { position: relative; z-index: 1; }   /* text above the galaxy */
+
+.hero h2 { max-width: 13ch; font-size: clamp(2.6rem, 7vw, 5.2rem); }
+.hero p  { margin-bottom: 2rem; font-size: 1.3rem; color: var(--gray); }
+
+/* Galaxy body: glowing spiral arms, tilted and slowly turning */
+.hero::before {
+  content: "";
+  position: absolute;
+  right: 3%;
+  top: 50%;
+  width: var(--size);
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  rotate: -24deg;                        /* tilt */
+  scale: 1 0.5;                          /* squash it so it looks angled */
+  border-radius: 50%;
+  background:
+    conic-gradient(transparent, rgba(175, 205, 255, 0.6) 35deg, transparent 120deg,
+                   transparent 180deg, rgba(175, 205, 255, 0.6) 215deg, transparent 300deg),
+    radial-gradient(circle, rgba(200, 215, 245, 0.35), transparent 70%);
+  mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+  filter: blur(4px);
+  animation: spin 180s linear infinite;
+}
+
+/* Galaxy center: a warm glowing core */
+.hero::after {
+  content: "";
+  position: absolute;
+  right: calc(3% + var(--size) * 0.34);
+  top: 50%;
+  width: calc(var(--size) * 0.32);
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  rotate: -24deg;
+  scale: 1 0.6;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffaf0, rgba(255, 205, 150, 0.5) 40%, transparent 72%);
+  filter: blur(3px);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- 9. PRODUCTS ---------- */
+.products {
+  display: grid;       /* as many columns as fit, each at least 230px */
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem;
+}
+
+.products h2 { grid-column: 1 / -1; }    /* title spans the full row */
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--round);
+  content-visibility: auto;              /* skips drawing off-screen cards = faster page */
+  contain-intrinsic-size: auto 420px;
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(190, 215, 255, 0.5);
+  box-shadow: 0 20px 50px -20px rgba(170, 205, 255, 0.5);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 1;                       /* square photos */
+  object-fit: cover;
+  background: #090c14;                   /* shows while the photo loads */
+}
+
+.product-card h3 { padding: 1rem 1.1rem 0; }
+
+.product-card p {
+  padding: 0 1.1rem;
+  font: 500 1.1rem var(--title-font);
+  color: var(--gold);
+}
+
+.product-card button { margin: auto 1.1rem 1.1rem; }   /* pushes button to the bottom */
+
+/* ---------- 10. CART ---------- */
+.cart-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--round);
+}
+
+.cart-table th, .cart-table td { padding: 1rem 1.3rem; text-align: left; }
+
+.cart-table th {
+  font: 500 0.85rem var(--title-font);
+  background: rgba(190, 215, 255, 0.12);
+}
+
+.cart-table td { border-top: 1px solid var(--border); }
+.cart-table td:last-child { color: var(--gold); }    /* total column */
+
+/* ---------- 11. ABOUT ---------- */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* two cards side by side */
+  gap: 1.5rem;
+}
+
+.about > h2, .about > p, .about > footer { grid-column: 1 / -1; }
+
+.mission, .story {
+  padding: 2rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--round);
+}
+
+.mission p, .story p { margin: 0; }
+
+/* ---------- 12. CONTACT FORM ---------- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 580px;
+  padding: 2rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--round);
+}
+
+label { margin-top: 0.6rem; font-weight: 500; color: var(--gray); }
+
+input, textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  color: var(--white);
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+textarea { min-height: 150px; resize: vertical; }
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 20px -4px var(--blue);   /* glow when you click a field */
+}
+
+form button { align-self: flex-start; margin-top: 1rem; }
+
+/* ---------- 13. FOOTER ---------- */
+footer {
+  margin-top: auto;                      /* pushes footer to the bottom */
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--gray);
+  border-top: 1px solid var(--border);
+}
+
+footer p { margin: 0 auto; }
+
+/* ---------- 14. PHONES & SMALL SCREENS ---------- */
+@media (max-width: 800px) {
+  header { justify-content: center; }
+  .about { grid-template-columns: 1fr; }                       /* cards stack */
+  .products { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }   /* 2 per row */
+  .hero::before, .hero::after { opacity: 0.45; right: -20%; }  /* galaxy fades behind text */
+  .hero::after { right: calc(-20% + var(--size) * 0.34); }
+}
+
+@media (max-width: 480px) {
+  .cart-table { display: block; overflow-x: auto; }            /* table scrolls sideways */
+  form button { width: 100%; }
+}
+
+/* ---------- 15. TURN OFF ANIMATION IF THE USER ASKS ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
